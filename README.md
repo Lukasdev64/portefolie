@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio de Lukas Andries
 
-## Getting Started
+Ce projet est un portfolio moderne et réactif construit avec Next.js 15, Tailwind CSS et Framer Motion.
 
-First, run the development server:
+## Technologies Utilisées
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework :** [Next.js 15](https://nextjs.org/) (App Router)
+- **Langage :** [TypeScript](https://www.typescriptlang.org/)
+- **Styles :** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations :** [Framer Motion](https://www.framer.com/motion/)
+- **Icônes :** [Lucide React](https://lucide.dev/)
+- **Utilitaires :** `clsx`, `tailwind-merge`, `class-variance-authority` 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure du Projet
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app` : Pages et layout de l'application (App Router).
+- `src/components` : Composants réutilisables (Header, Hero, Skills, Experience, Contact, Footer).
+- `src/lib` : Fonctions utilitaires.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation et Démarrage
 
-## Learn More
+1.  Installer les dépendances :
 
-To learn more about Next.js, take a look at the following resources:
+    `ash
+    npm install
+    ` 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2.  Lancer le serveur de développement :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    `ash
+    npm run dev
+    ` 
 
-## Deploy on Vercel
+3.  Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Déploiement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Le projet est optimisé pour être déployé sur [Vercel](https://vercel.com/).
+
+## Fonctionnalités
+
+- Design responsive et moderne.
+- Animations fluides au défilement.
+- Mode sombre/clair (préparé via les variables CSS).
+- Formulaire de contact (interface utilisateur).
+- Sections : Accueil, À propos, Compétences, Expérience, Contact.
