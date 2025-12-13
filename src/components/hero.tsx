@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
@@ -7,9 +8,11 @@ import { TextReveal } from "@/components/text-reveal"
 import { Scene3D } from "@/components/scene-3d"
 
 export function Hero() {
+  const [isWarping, setIsWarping] = useState(false)
+
   return (
     <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
-      <Scene3D />
+      <Scene3D isWarping={isWarping} />
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -40,12 +43,16 @@ export function Hero() {
           >
             <Link
               href="#contact"
+              onMouseEnter={() => setIsWarping(true)}
+              onMouseLeave={() => setIsWarping(false)}
               className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
             >
               Me contacter <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="#projects"
+              onMouseEnter={() => setIsWarping(true)}
+              onMouseLeave={() => setIsWarping(false)}
               className="px-8 py-3 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors font-medium"
             >
               Voir mes projets

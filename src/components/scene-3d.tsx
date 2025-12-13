@@ -5,7 +5,7 @@ import { Points, PointMaterial, Preload, Text } from "@react-three/drei"
 import { useRef, Suspense, useState } from "react"
 import * as THREE from "three"
 
-function StarField(props: any) {
+function StarField({ isWarping, ...props }: { isWarping: boolean } & any) {
   const ref = useRef<any>(null)
   const [sphere] = useState(() => {
     const positions = new Float32Array(6000 * 3)
@@ -25,14 +25,30 @@ function StarField(props: any) {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta / 15
-      ref.current.rotation.y -= delta / 20
+      // Normal rotation
+      const baseSpeedX = delta / 15
+      const baseSpeedY = delta / 20
+      
+      // Warp speed
+      const warpSpeed = delta * 2 // Much faster
+      
+      // Lerp between speeds for smooth transition
+      const targetSpeedX = isWarping ? warpSpeed : baseSpeedX
+      const targetSpeedY = isWarping ? 0 : baseSpeedY // Stop Y rotation during warp for "tunnel" effect
+      
+      // Simple lerp implementation
+      ref.current.rotation.x -= targetSpeedX
+      ref.current.rotation.y -= targetSpeedY
+      
+      // Scale effect for "streaks" (simulated by stretching the whole group)
+      const targetScale = isWarping ? 2 : 1
+      ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, targetScale, 0.1)
     }
   })
 
-  return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+function BrightStars({ isWarping }: { isWarping: boolean }) {
+  const ref = useRef<any>(null)
+  const [positions] = useState(() => {ere} stride={3} frustumCulled={false} {...props}>
         <PointMaterial
           transparent
           color="#8b5cf6"
@@ -64,8 +80,15 @@ function BrightStars() {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta / 20
-      ref.current.rotation.y -= delta / 25
+      const baseSpeedX = delta / 20
+      const baseSpeedY = delta / 25
+      const warpSpeed = delta * 3
+      
+      const targetSpeedX = isWarping ? warpSpeed : baseSpeedX
+      const targetSpeedY = isWarping ? 0 : baseSpeedY
+      
+      ref.current.rotation.x -= targetSpeedX
+      ref.current.rotation.y -= targetSpeedY
     }
   })
 
@@ -143,23 +166,23 @@ function ShootingStar() {
   })
 
   return (
-    <mesh ref={ref} visible={false}>
-      <sphereGeometry args={[0.1, 8, 8]} />
-      <meshBasicMaterial color="#ffffff" transparent opacity={0.8} />
-    </mesh>
-  )
-}
-
-export function Scene3D() {
+export function Scene3D({ isWarping = false }: { isWarping?: boolean }) {
   return (
     <div className="absolute inset-0 -z-10 h-full w-full bg-black/0">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <Crawl />
-          <StarField />
-          <BrightStars />
+          <StarField isWarping={isWarping} />
+          <BrightStars isWarping={isWarping} />
           {Array.from({ length: 20 }).map((_, i) => (
             <ShootingStar key={i} />
+          ))}
+          <Preload all />
+        </Suspense>
+      </Canvas>
+    </div>
+  )
+}           <ShootingStar key={i} />
           ))}
           <Preload all />
         </Suspense>
