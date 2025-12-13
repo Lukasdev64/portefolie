@@ -53,17 +53,17 @@ export function Experience() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative pl-8 pb-12 last:pb-0 border-l-2 border-border/50"
+              className="group relative pl-8 pb-12 last:pb-0 border-l-2 border-border/50 hover:border-primary/50 transition-colors duration-500"
             >
-              <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-background" />
+              <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-background group-hover:scale-125 group-hover:shadow-[0_0_10px_rgba(var(--primary),0.5)] transition-all duration-300" />
               
-              <div className="bg-muted/30 p-6 rounded-2xl border border-border/50 hover:border-primary/30 transition-colors">
+              <div className="bg-muted/30 p-6 rounded-2xl border border-border/50 group-hover:border-primary/30 group-hover:bg-muted/50 group-hover:-translate-y-1 group-hover:shadow-lg transition-all duration-300">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
                   <div>
-                    <h3 className="text-xl font-bold">{exp.role}</h3>
+                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{exp.role}</h3>
                     <p className="text-primary font-medium">{exp.company}</p>
                   </div>
-                  <div className="flex items-center text-muted-foreground text-sm bg-background px-3 py-1 rounded-full border border-border w-fit">
+                  <div className="flex items-center text-muted-foreground text-sm bg-background px-3 py-1 rounded-full border border-border w-fit group-hover:border-primary/30 transition-colors">
                     <Briefcase className="h-3 w-3 mr-2" />
                     {exp.period}
                   </div>
@@ -77,7 +77,7 @@ export function Experience() {
                   {exp.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary"
+                      className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors"
                     >
                       {tag}
                     </span>
