@@ -57,7 +57,7 @@ export function Hero() {
             className="mt-12 flex items-center justify-center gap-6 text-muted-foreground"
           >
             <a
-              href="https://github.com"
+              href="https://github.com/Lukasdev64"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
@@ -66,7 +66,7 @@ export function Hero() {
               <span className="sr-only">GitHub</span>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/andries-lukas-396387303/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
