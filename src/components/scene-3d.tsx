@@ -10,6 +10,11 @@ function WarpStars({ isWarping }: { isWarping: boolean }) {
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
   
+  // Refs for smooth transition values
+  const currentSpeed = useRef(2)
+  const currentStretch = useRef(1)
+  const currentScaleXY = useRef(1)
+  
   const stars = useMemo(() => {
     const temp = []
     for (let i = 0; i < count; i++) {
@@ -24,14 +29,29 @@ function WarpStars({ isWarping }: { isWarping: boolean }) {
   useFrame((state, delta) => {
     if (!meshRef.current) return
 
-    // Speed factor
-    const speed = isWarping ? 50 : 2
-    // Stretch factor
-    const stretch = isWarping ? 20 : 1
+    // Target values
+    const targetSpeed = isWarping ? 50 : 2
+    const targetStretch = isWarping ? 20 : 1
+    const targetScaleXY = isWarping ? 0.2 : 1
+    const targetOpacity = isWarping ? 0.8 : 0.4
+
+    // Smooth transitions (lerp)
+    // Using a factor of delta * 5 for a quick but smooth transition (approx 0.5-1s)
+    const lerpFactor = delta * 5
+    
+    currentSpeed.current = THREE.MathUtils.lerp(currentSpeed.current, targetSpeed, lerpFactor)
+    currentStretch.current = THREE.MathUtils.lerp(currentStretch.current, targetStretch, lerpFactor)
+    currentScaleXY.current = THREE.MathUtils.lerp(currentScaleXY.current, targetScaleXY, lerpFactor)
+    
+    // Update material opacity
+    const material = meshRef.current.material as THREE.MeshBasicMaterial
+    if (material) {
+       material.opacity = THREE.MathUtils.lerp(material.opacity, targetOpacity, lerpFactor)
+    }
 
     stars.forEach((star, i) => {
       // Move star towards camera (positive Z)
-      star.z += delta * speed
+      star.z += delta * currentSpeed.current
       
       // Reset if passed camera
       if (star.z > 50) {
@@ -43,9 +63,9 @@ function WarpStars({ isWarping }: { isWarping: boolean }) {
       dummy.position.set(star.x, star.y, star.z)
       
       // Scale Z based on warp state
-      dummy.scale.z = stretch
-      dummy.scale.x = isWarping ? 0.2 : 1
-      dummy.scale.y = isWarping ? 0.2 : 1
+      dummy.scale.z = currentStretch.current
+      dummy.scale.x = currentScaleXY.current
+      dummy.scale.y = currentScaleXY.current
       
       dummy.updateMatrix()
       meshRef.current!.setMatrixAt(i, dummy.matrix)
@@ -57,7 +77,7 @@ function WarpStars({ isWarping }: { isWarping: boolean }) {
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <boxGeometry args={[0.1, 0.1, 1]} />
-      <meshBasicMaterial color="#e9d5ff" transparent opacity={isWarping ? 0.8 : 0.4} />
+      <meshBasicMaterial color="#e9d5ff" transparent opacity={0.4} />
     </instancedMesh>
   )
 }
@@ -65,6 +85,7 @@ function WarpStars({ isWarping }: { isWarping: boolean }) {
 function StarField({ isWarping, ...props }: { isWarping: boolean } & any) {
   // Keep the original starfield for background depth, but fade it out during warp
   const ref = useRef<any>(null)
+  const materialRef = useRef<THREE.PointsMaterial>(null)
   const [sphere] = useState(() => {
     const positions = new Float32Array(3000 * 3) // Reduced count
     for (let i = 0; i < 3000; i++) {
@@ -84,19 +105,25 @@ function StarField({ isWarping, ...props }: { isWarping: boolean } & any) {
       ref.current.rotation.x -= delta / 20
       ref.current.rotation.y -= delta / 30
     }
+    
+    if (materialRef.current) {
+        const targetOpacity = isWarping ? 0.1 : 0.8
+        materialRef.current.opacity = THREE.MathUtils.lerp(materialRef.current.opacity, targetOpacity, delta * 5)
+    }
   })
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
         <PointMaterial
+          ref={materialRef}
           transparent
           color="#4c1d95" // Darker purple
           size={0.05}
           sizeAttenuation={true}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
-          opacity={isWarping ? 0.2 : 0.8} // Fade out during warp
+          opacity={0.8}
         />
       </Points>
     </group>
