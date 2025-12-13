@@ -122,7 +122,7 @@ function ShootingStar() {
   const [consts] = useState(() => ({
     x: (Math.random() - 0.5) * 40,
     y: (Math.random() - 0.5) * 40,
-    z: (Math.random() - 0.5) * 20,
+    z: -15 - Math.random() * 10, // Pushed back behind text
     speed: 1.5 + Math.random(), // Random speed
     offset: Math.random() * 10
   }))
