@@ -90,16 +90,16 @@ function Crawl() {
   
   useFrame((state, delta) => {
     if (group.current) {
-      group.current.position.y += delta * 0.5
-      if (group.current.position.y > 25) {
-        group.current.position.y = -25
+      group.current.position.y += delta * 1.5
+      if (group.current.position.y > 40) {
+        group.current.position.y = -40
       }
     }
   })
 
   return (
     <group rotation={[-Math.PI / 2.5, 0, 0]} position={[0, -2, -5]}>
-      <group ref={group} position={[0, -25, 0]}>
+      <group ref={group} position={[0, -40, 0]}>
         <Text
           color="#fbbf24"
           fontSize={1.5}
