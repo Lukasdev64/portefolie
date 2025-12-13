@@ -4,11 +4,13 @@ import { motion } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 import { TextReveal } from "@/components/text-reveal"
+import { Scene3D } from "@/components/scene-3d"
 
 export function Hero() {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-20">
-      <div className="container mx-auto px-4">
+    <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+      <Scene3D />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
