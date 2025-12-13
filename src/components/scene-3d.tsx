@@ -119,20 +119,22 @@ function Crawl() {
 
 function ShootingStar() {
   const ref = useRef<THREE.Mesh>(null)
-  const [startPos] = useState(() => ({
+  const [consts] = useState(() => ({
     x: (Math.random() - 0.5) * 40,
     y: (Math.random() - 0.5) * 40,
-    z: (Math.random() - 0.5) * 20
+    z: (Math.random() - 0.5) * 20,
+    speed: 1.5 + Math.random(), // Random speed
+    offset: Math.random() * 10
   }))
   
   useFrame((state) => {
     if (!ref.current) return
     const time = state.clock.getElapsedTime()
-    const t = (time * 2 + startPos.x) % 5
+    const t = (time * consts.speed + consts.offset) % 5
     
     if (t < 0.5) {
-      ref.current.position.x = startPos.x + t * 10
-      ref.current.position.y = startPos.y - t * 10
+      ref.current.position.x = consts.x + t * 10
+      ref.current.position.y = consts.y - t * 10
       ref.current.scale.setScalar(1 - t * 2)
       ref.current.visible = true
     } else {
@@ -156,7 +158,7 @@ export function Scene3D() {
           <Crawl />
           <StarField />
           <BrightStars />
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 20 }).map((_, i) => (
             <ShootingStar key={i} />
           ))}
           <Preload all />
