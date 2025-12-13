@@ -6,7 +6,7 @@ import { useRef, Suspense, useState } from "react"
 import * as THREE from "three"
 
 function StarField(props: any) {
-  const ref = useRef<any>()
+  const ref = useRef<any>(null)
   const [sphere] = useState(() => {
     const positions = new Float32Array(6000 * 3)
     for (let i = 0; i < 6000; i++) {
@@ -47,7 +47,7 @@ function StarField(props: any) {
 }
 
 function BrightStars() {
-  const ref = useRef<any>()
+  const ref = useRef<any>(null)
   const [positions] = useState(() => {
     const pos = new Float32Array(300 * 3)
     for (let i = 0; i < 300; i++) {
@@ -86,7 +86,7 @@ function BrightStars() {
 }
 
 function Crawl() {
-  const group = useRef<any>()
+  const group = useRef<any>(null)
   
   useFrame((state, delta) => {
     if (group.current) {
