@@ -132,8 +132,9 @@ function StarField({ isWarping, ...props }: { isWarping: boolean } & any) {
 
 
 
-function Crawl() {
+function Crawl({ isWarping }: { isWarping: boolean }) {
   const group = useRef<any>(null)
+  const textRef = useRef<any>(null)
   
   useFrame((state, delta) => {
     if (group.current) {
@@ -142,12 +143,19 @@ function Crawl() {
         group.current.position.y = -40
       }
     }
+
+    if (textRef.current) {
+      const targetOpacity = isWarping ? 0 : 0.15
+      // Smoothly fade opacity
+      textRef.current.fillOpacity = THREE.MathUtils.lerp(textRef.current.fillOpacity, targetOpacity, delta * 5)
+    }
   })
 
   return (
     <group rotation={[-Math.PI / 2.5, 0, 0]} position={[0, -2, -5]}>
       <group ref={group} position={[0, -40, 0]}>
         <Text
+          ref={textRef}
           color="#fbbf24"
           fontSize={1.5}
           maxWidth={12}
@@ -202,7 +210,7 @@ export function Scene3D({ isWarping = false }: { isWarping?: boolean }) {
     <div className="absolute inset-0 -z-10 h-full w-full bg-black/0">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
-          <Crawl />
+          <Crawl isWarping={isWarping} />
           <StarField isWarping={isWarping} />
           <WarpStars isWarping={isWarping} />
           {Array.from({ length: 20 }).map((_, i) => (
